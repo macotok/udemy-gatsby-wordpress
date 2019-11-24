@@ -94,7 +94,8 @@ const slash = require(`slash`)
 // Will create pages for WordPress pages (route : /{slug})
 // Will create pages for WordPress posts (route : /post/{slug})
 exports.createPages = ({ graphql, actions }) => {
-  const { createPage } = actions
+  const { createPage, createRedirect } = actions;
+  createRedirect({ fromPath: '/', toPath: '/home', redirectInBrowser: true, isPermanent: true })
   return new Promise((resolve, reject) => {
     // The “graphql” function allows us to run arbitrary
     // queries against the local WordPress graphql schema. Think of
@@ -192,7 +193,7 @@ exports.createPages = ({ graphql, actions }) => {
 }
 ```
 
-`context: edge.node,`と指定するとpropsにdataが入る
+- `context: edge.node,`と指定するとpropsにdataが入る
 
 ```javascript:src/templates/page.js
 import React from 'react';
@@ -204,6 +205,14 @@ export default ({ pageContext }) => (
     </h1>
   </div>
 )
+```
+
+- pageでredirect処理
+- root pathで`/home(slug)`にredirect
+
+```javascript
+const { createRedirect } = actions;
+createRedirect({ fromPath: '/', toPath: '/home', redirectInBrowser: true, isPermanent: true })
 ```
 
 ## WordPressのdataをGraphQLで取得
