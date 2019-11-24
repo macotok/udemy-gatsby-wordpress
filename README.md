@@ -1,7 +1,7 @@
 # udemy-gatsby-wordpress
 
 - [Gatsby JS: Build static sites with React Wordpress & GraphQL](https://www.udemy.com/course/gatsby-js-react-wordpress-graphql/)を参考
-- wordpressのCMSで投稿したdataをGraghQLで取得してGatsby(React)でサイト表示
+- WordPressのCMSで投稿したdataをGraghQLで取得してGatsby(React)でサイト表示
 
 ## Set Up
 
@@ -12,7 +12,7 @@
 
 ### API
 
-wordpressで提供しているREST APIからdataを取得するのではなく、GraphQLでdata取得
+WordPressで提供しているREST APIからdataを取得するのではなくGraphQLでdata取得
 
 REST API例
 http://localhost:8888/myawesomeportfolio.io/wp-json/wp/v2/pages
@@ -77,4 +77,59 @@ plugins: [
       },
     },
   ],
+```
+
+
+## WordPressのdataをGraphQLで取得
+
+### GraphQLで取得したdataを展開
+
+```javascript
+import React from 'react';
+import { graphql, StaticQuery } from 'gatsby';
+
+const Hoge = () => (
+  <>
+    <StaticQuery query={graphql`
+      {
+        allWordpressPage{
+          edges{
+            node{
+              id
+              title
+              content
+            }
+          }
+        }
+      }
+    `} render={props => (
+      <>
+        {props.allWordpressPage.edges.map(page => (
+          <div key={page.node.id}>
+            <h1>{page.node.title}</h1>
+            <div dangerouslySetInnerHTML={{ __html: page.node.content }} />
+          </div>
+        ))}
+      </>
+    )} />
+  </>
+)
+
+export default Hoge;
+```
+
+### 固定ページ
+
+```
+{
+  allWordpressPage{
+    edges{
+      node{
+        id
+        title
+        content
+      }
+    }
+  }
+}
 ```
