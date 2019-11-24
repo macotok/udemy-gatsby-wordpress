@@ -223,6 +223,41 @@ createRedirect({ fromPath: '/', toPath: '/home', redirectInBrowser: true, isPerm
 - ダミーテキスト生成用のfaker [https://hipsum.co/](https://hipsum.co/)
 - メニューのAPIを生成プラグイン「WP REST API Menus」(WordPress) http://localhost:8888/myawesomeportfolio.io/wp-json/wp-api-menus/v2/menus
 
+## メモ
+
+### GraphQLで取得したdataにLinkを設定
+
+- GatsbyのLink componentを使用
+
+```javascript
+import React from 'react';
+import { graphql, StaticQuery, Link } from 'gatsby';
+
+<StaticQuery query={graphql`
+    {
+      allWordpressWpApiMenusMenusItems{
+        edges{
+          node{
+            items{
+              title
+              object_slug
+            }
+          }
+        }
+      }
+    }
+    `} render={props => (
+    <div>
+      {props.allWordpressWpApiMenusMenusItems.edges[0].node.items.map(item => (
+        <Link to={`/${item.object_slug}`} key={item.title}>
+          {item.title}
+        </Link>
+      ))}
+    </div>
+)} />
+```
+
+
 ## WordPressのdataをGraphQLで取得
 
 ### GraphQLで取得したdataを展開
