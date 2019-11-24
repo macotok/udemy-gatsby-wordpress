@@ -68,8 +68,9 @@ plugins: [
           "**/tags",
           "**/taxonomies",
           "**/users",
+          "**/menus",
         ],
-        excludedRoutes: ["**/posts/1456"],
+        excludedRoutes: [],
         keepMediaSizes: false,
         normalizer: function({ entities }) {
           return entities
@@ -215,6 +216,13 @@ const { createRedirect } = actions;
 createRedirect({ fromPath: '/', toPath: '/home', redirectInBrowser: true, isPermanent: true })
 ```
 
+## 制作
+
+### ツール
+
+- ダミーテキスト生成用のfaker [https://hipsum.co/](https://hipsum.co/)
+- メニューのAPIを生成プラグイン「WP REST API Menus」(WordPress) http://localhost:8888/myawesomeportfolio.io/wp-json/wp-api-menus/v2/menus
+
 ## WordPressのdataをGraphQLで取得
 
 ### GraphQLで取得したdataを展開
@@ -263,6 +271,23 @@ export default Hoge;
         id
         title
         content
+      }
+    }
+  }
+}
+```
+
+### メニュー
+
+```
+{
+  allWordpressWpApiMenusMenusItems{
+    edges{
+      node{
+        items{
+          title
+          object_slug
+        }
       }
     }
   }
