@@ -23,7 +23,6 @@ http://localhost:8888/myawesomeportfolio.io/wp-json/wp/v2/pages
 $ npm install -g gatsby-cli
 ````
 
-
 ### WordPressのREST APIをGatsbyにデータをpullさせるプラグインを設定
 
 ````terminal
@@ -223,8 +222,6 @@ createRedirect({ fromPath: '/', toPath: '/home', redirectInBrowser: true, isPerm
 - ダミーテキスト生成用のfaker [https://hipsum.co/](https://hipsum.co/)
 - メニューのAPIを生成プラグイン「WP REST API Menus」(WordPress) http://localhost:8888/myawesomeportfolio.io/wp-json/wp-api-menus/v2/menus
 
-## メモ
-
 ### GraphQLで取得したdataにLinkを設定
 
 - GatsbyのLink componentを使用
@@ -254,6 +251,75 @@ import { graphql, StaticQuery, Link } from 'gatsby';
     ))}
   </div>
 )} />
+```
+
+### styled-componentsを使用
+
+```terminal
+$ yarn add gatsby-plugin-styled-components styled-components babel-plugin-styled-components
+```
+
+- globalに設定
+
+```javascript
+import styled, { createGlobalStyle } from 'styled-components';
+
+const GlobalStyles = createGlobalStyle`
+  @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i&display=swap');
+  body, html {
+    font-family: 'Open Sans', san-serif;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+`;
+
+const Layout = ({ children }) => (
+ <div>
+   <GlobalStyles />
+ </div>
+);
+```
+
+- Linkにstyled-componentsを使用
+
+```javascript
+import { graphql, StaticQuery, Link } from 'gatsby';
+import styled from 'styled-components';
+
+const ManuItem = styled(Link)`
+  color: white;
+  display: block;
+  padding: 8px 16px;
+`;
+
+const MainMenu = () => (
+  <StaticQuery query={graphql`
+    {
+      allWordpressWpApiMenusMenusItems(filter: {
+        name: {
+          eq: "Main menu"
+        }
+      }){
+        edges{
+          node{
+            items{
+              title
+              object_slug
+            }
+          }
+        }
+      }
+    }
+  `} render={props => (
+    <MainMenuWrapper>
+      {props.allWordpressWpApiMenusMenusItems.edges[0].node.items.map(item => (
+        <ManuItem to={`/${item.object_slug}`} key={item.title}>
+          {item.title}
+        </ManuItem>
+      ))}
+    </MainMenuWrapper>
+  )} />
+);
 ```
 
 
