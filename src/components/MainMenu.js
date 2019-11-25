@@ -11,6 +11,10 @@ const ManuItem = styled(Link)`
   color: white;
   display: block;
   padding: 8px 16px;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const MainMenu = () => (
