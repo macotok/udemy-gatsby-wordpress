@@ -32,52 +32,52 @@ $ npm install --save gatsby-source-wordpress
 
 ``` javascript:gatsby-config.js
 plugins: [
-    {
-      resolve: "gatsby-source-wordpress",
-      options: {
-        baseUrl: "localhost:8888/myawesomeportfolio.io", // wordpressのurl
-        protocol: "http",
-        hostingWPCOM: false,
-        useACF: true,
-        acfOptionPageIds: [],
-        auth: {
-          htaccess_user: "your-htaccess-username",
-          htaccess_pass: "your-htaccess-password",
-          htaccess_sendImmediately: false,
-          wpcom_app_clientSecret: process.env.WORDPRESS_CLIENT_SECRET,
-          wpcom_app_clientId: "54793",
-          wpcom_user: "gatsbyjswpexample@gmail.com",
-          wpcom_pass: process.env.WORDPRESS_PASSWORD,
-          jwt_user: process.env.JWT_USER,
-          jwt_pass: process.env.JWT_PASSWORD,
-          jwt_base_path: "/jwt-auth/v1/token",
-        },
-        cookies: {},
-        verboseOutput: false,
-        perPage: 100,
-        searchAndReplaceContentUrls: {
-          sourceUrl: "https://source-url.com",
-          replacementUrl: "https://replacement-url.com",
-        },
-        concurrentRequests: 10,
-        includedRoutes: [
-          "**/categories",
-          "**/posts",
-          "**/pages",
-          "**/media",
-          "**/tags",
-          "**/taxonomies",
-          "**/users",
-          "**/menus",
-        ],
-        excludedRoutes: [],
-        keepMediaSizes: false,
-        normalizer: function({ entities }) {
-          return entities
-        },
+  {
+    resolve: "gatsby-source-wordpress",
+    options: {
+      baseUrl: "localhost:8888/myawesomeportfolio.io", // wordpressのurl
+      protocol: "http",
+      hostingWPCOM: false,
+      useACF: true,
+      acfOptionPageIds: [],
+      auth: {
+        htaccess_user: "your-htaccess-username",
+        htaccess_pass: "your-htaccess-password",
+        htaccess_sendImmediately: false,
+        wpcom_app_clientSecret: process.env.WORDPRESS_CLIENT_SECRET,
+        wpcom_app_clientId: "54793",
+        wpcom_user: "gatsbyjswpexample@gmail.com",
+        wpcom_pass: process.env.WORDPRESS_PASSWORD,
+        jwt_user: process.env.JWT_USER,
+        jwt_pass: process.env.JWT_PASSWORD,
+        jwt_base_path: "/jwt-auth/v1/token",
+      },
+      cookies: {},
+      verboseOutput: false,
+      perPage: 100,
+      searchAndReplaceContentUrls: {
+        sourceUrl: "https://source-url.com",
+        replacementUrl: "https://replacement-url.com",
+      },
+      concurrentRequests: 10,
+      includedRoutes: [
+        "**/categories",
+        "**/posts",
+        "**/pages",
+        "**/media",
+        "**/tags",
+        "**/taxonomies",
+        "**/users",
+        "**/menus",
+      ],
+      excludedRoutes: [],
+      keepMediaSizes: false,
+      normalizer: function({ entities }) {
+        return entities
       },
     },
-  ],
+  },
+],
 ```
 
 ### WordPressのdataをNode.jsで読み込みRouting処理
@@ -230,30 +230,29 @@ createRedirect({ fromPath: '/', toPath: '/home', redirectInBrowser: true, isPerm
 - GatsbyのLink componentを使用
 
 ```javascript
-import React from 'react';
 import { graphql, StaticQuery, Link } from 'gatsby';
 
 <StaticQuery query={graphql`
-    {
-      allWordpressWpApiMenusMenusItems{
-        edges{
-          node{
-            items{
-              title
-              object_slug
-            }
+  {
+    allWordpressWpApiMenusMenusItems{
+      edges{
+        node{
+          items{
+            title
+            object_slug
           }
         }
       }
     }
-    `} render={props => (
-    <div>
-      {props.allWordpressWpApiMenusMenusItems.edges[0].node.items.map(item => (
-        <Link to={`/${item.object_slug}`} key={item.title}>
-          {item.title}
-        </Link>
-      ))}
-    </div>
+  }
+  `} render={props => (
+  <div>
+    {props.allWordpressWpApiMenusMenusItems.edges[0].node.items.map(item => (
+      <Link to={`/${item.object_slug}`} key={item.title}>
+        {item.title}
+      </Link>
+    ))}
+  </div>
 )} />
 ```
 
@@ -291,7 +290,7 @@ const Hoge = () => (
       </>
     )} />
   </>
-)
+);
 
 export default Hoge;
 ```
@@ -316,7 +315,11 @@ export default Hoge;
 
 ```
 {
-  allWordpressWpApiMenusMenusItems{
+  allWordpressWpApiMenusMenusItems(filter: {
+    name: {
+      eq: "Main menu"
+    }
+  }){
     edges{
       node{
         items{
