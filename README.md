@@ -397,3 +397,18 @@ export default Hoge;
   }
 }
 ```
+
+### サイトタイトルとディスクリプション
+
+```
+{
+  allWordpressSiteMetadata{
+    edges{
+      node{
+        name
+        description
+      }
+    }
+  }
+}
+```
