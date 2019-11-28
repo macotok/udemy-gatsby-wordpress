@@ -322,6 +322,24 @@ const MainMenu = () => (
 );
 ```
 
+### カスタム投稿タイプ「portfolio」を追加
+
+- REST-APIのurl http://localhost:8888/myawesomeportfolio.io/wp-json/wp/v2/portfolio
+- `gatsby-config.js`、`gatsby-source-wordpress`、optionsに追加
+
+```javascript
+includedRoutes: [
+  "**/categories",
+  "**/posts",
+  "**/pages",
+  "**/media",
+  "**/tags",
+  "**/taxonomies",
+  "**/users",
+  "**/menus",
+  "**/portfolio",
+]
+```
 
 ## WordPressのdataをGraphQLで取得
 
@@ -408,6 +426,27 @@ export default Hoge;
         name
         description
       }
+    }
+  }
+}
+```
+
+### カスタム投稿タイプ「portfolio」
+
+```
+{
+  allWordpressWpPortfolio{
+    edges{
+      node{
+        id
+        title
+        slug
+        excerpt
+        content
+        featured_media{
+          source_url
+        }
+  		}
     }
   }
 }

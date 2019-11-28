@@ -116,6 +116,7 @@ module.exports = {
           "**/taxonomies",
           "**/users",
           "**/menus",
+          "**/portfolio",
         ],
         // Blacklisted routes using glob patterns
         excludedRoutes: [],
