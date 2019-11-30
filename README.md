@@ -407,6 +407,37 @@ _.each(result.data.allWordpressPage.edges, edge => {
 })
 ```
 
+### 「Advanced Custom Fields」を扱う
+
+- WordPressのプラグイン「Advanced Custom Fields」「ACF to REST API」をinstall
+- `gatsby-node.js`でGraphQLで取得するdataにacfを追加
+
+```javascript:gatsby-node.js
+graphql(
+  `
+    {
+      allWordpressWpPortfolio{
+        edges{
+          node{
+            id
+            title
+            slug
+            excerpt
+            content
+            featured_media{
+              source_url
+            }
+            acf{
+              portfolio_url
+            }
+          }
+        }
+      }
+    }
+  `
+)
+```
+
 ## WordPressのdataをGraphQLで取得
 
 ### GraphQLで取得したdataを展開
@@ -521,6 +552,26 @@ export default Hoge;
   }
 }
 ```
+
+### Advanced Custom Fieldsのdataを取得
+
+- WordPressのプラグイン「Advanced Custom Fields」「ACF to REST API」をinstall
+
+```
+{
+  allWordpressWpPortfolio{
+    edges{
+      node{
+        title
+        acf {
+          portfolio_url
+        }
+      }
+    }
+  }
+}
+```
+
 
 ## その他
 
