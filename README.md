@@ -386,7 +386,26 @@ includedRoutes: [
 // ==== END PORTFOLIO ====
 ```
 
+### templateの選択によってレイアウトを変える
 
+- WordPressの固定ページにTemplate選択機能を追加、投稿ページに適用
+- `gatsby-node.js`にtemplateの種類を追加、その分岐処理
+
+```php:wp-content/themes/wp-gatsby-js-theme-starter-master/portfolio_under_content.php
+<?php /* Template name: Portfolio items below content */ ?>
+```
+
+```javascript:gatsby-node.js
+const pageTemplate = path.resolve("./src/templates/page.js")
+const portfolioUnderContentTemplate = path.resolve("./src/templates/portfolioUnderContent.js")
+_.each(result.data.allWordpressPage.edges, edge => {
+  createPage({
+    path: `/${edge.node.slug}/`,
+    component: slash(edge.node.template === 'portfolio_under_content.php' ? portfolioUnderContentTemplate : pageTemplate),
+    context: edge.node,
+  })
+})
+```
 
 ## WordPressのdataをGraphQLで取得
 
@@ -430,12 +449,16 @@ export default Hoge;
 
 ```
 {
-  allWordpressPage{
-    edges{
-      node{
+  allWordpressPage {
+    edges {
+      node {
         id
+        slug
+        status
+        template
         title
         content
+        template
       }
     }
   }
@@ -493,7 +516,7 @@ export default Hoge;
         featured_media{
           source_url
         }
-  		}
+      }
     }
   }
 }
