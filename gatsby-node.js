@@ -67,12 +67,12 @@ exports.createPages = ({ graphql, actions }) => {
       })
       // ==== END PAGES ====
 
-      // ==== POSTS (WORDPRESS NATIVE AND ACF) ====
+      // ==== PORTFOLIO (WORDPRESS NATIVE AND ACF) ====
       .then(() => {
         graphql(
           `
             {
-              allWordpressPost {
+              allWordpressWpPortfolio{
                 edges{
                   node{
                     id
@@ -80,6 +80,9 @@ exports.createPages = ({ graphql, actions }) => {
                     slug
                     excerpt
                     content
+                    featured_media{
+                      source_url
+                    }
                   }
                 }
               }
@@ -90,20 +93,20 @@ exports.createPages = ({ graphql, actions }) => {
             console.log(result.errors)
             reject(result.errors)
           }
-          const postTemplate = path.resolve("./src/templates/post.js")
+          const portfolioTemplate = path.resolve("./src/templates/portfolio.js")
           // We want to create a detailed page for each
           // post node. We'll just use the WordPress Slug for the slug.
           // The Post ID is prefixed with 'POST_'
-          _.each(result.data.allWordpressPost.edges, edge => {
+          _.each(result.data.allWordpressWpPortfolio.edges, edge => {
             createPage({
-              path: `/post/${edge.node.slug}/`,
-              component: slash(postTemplate),
+              path: `/portfolio/${edge.node.slug}/`,
+              component: slash(portfolioTemplate),
               context: edge.node,
             })
           })
           resolve()
         })
       })
-    // ==== END POSTS ====
+    // ==== END PORTFOLIO ====
   })
 }

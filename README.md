@@ -326,8 +326,9 @@ const MainMenu = () => (
 
 - REST-APIのurl http://localhost:8888/myawesomeportfolio.io/wp-json/wp/v2/portfolio
 - `gatsby-config.js`、`gatsby-source-wordpress`、optionsに追加
+- `gatby-node.js`に「portfolio」のtemplateを追加
 
-```javascript
+```javascript:gatsby-config.js
 includedRoutes: [
   "**/categories",
   "**/posts",
@@ -340,6 +341,52 @@ includedRoutes: [
   "**/portfolio",
 ]
 ```
+
+```javascript:gatby-node.js
+// ==== PORTFOLIO (WORDPRESS NATIVE AND ACF) ====
+.then(() => {
+  graphql(
+    `
+      {
+        allWordpressWpPortfolio{
+          edges{
+            node{
+              id
+              title
+              slug
+              excerpt
+              content
+              featured_media{
+                source_url
+              }
+            }
+          }
+        }
+      }
+    `
+  ).then(result => {
+    if (result.errors) {
+      console.log(result.errors)
+      reject(result.errors)
+    }
+    const portfolioTemplate = path.resolve("./src/templates/portfolio.js")
+    // We want to create a detailed page for each
+    // post node. We'll just use the WordPress Slug for the slug.
+    // The Post ID is prefixed with 'POST_'
+    _.each(result.data.allWordpressWpPortfolio.edges, edge => {
+      createPage({
+        path: `/portfolio/${edge.node.slug}/`,
+        component: slash(portfolioTemplate),
+        context: edge.node,
+      })
+    })
+    resolve()
+  })
+})
+// ==== END PORTFOLIO ====
+```
+
+
 
 ## WordPressのdataをGraphQLで取得
 
