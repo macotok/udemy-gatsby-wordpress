@@ -446,6 +446,63 @@ graphql(
 )
 ```
 
+### 投稿一覧画面にページネーション実装
+
+- `gatsby-node.js`でGraphQLで展開したdataを元に`CreatePage`を設定
+- `CreatePage`の中身を設定
+    - component(templateの場所)
+    - context(templateの引数で受け取るvalue)
+    - path(Routing)
+
+```javascript:gatsby-node.js
+const posts = result.data.allWordpressPost.edges;
+const postsPerPage = 2;
+const numberOfPages = Math.ceil(posts.length / postsPerPage);
+const blogPostListTemplate = path.resolve('./src/templates/blogPostList.js');
+
+Array.from({ length: numberOfPages }).forEach((page, index) => {
+  createPage({
+    component: slash(blogPostListTemplate),
+    path: index === 0 ? '/blog' : `/blog/${index + 1}`,
+    context: {
+      posts: posts.slice(index * postsPerPage, (index * postsPerPage) + postsPerPage),
+      numberOfPages,
+      currentPage: index + 1
+    },
+  });
+});
+```
+
+- `CreatePage`のdataをtemplatesで画面制作
+- `pageContext.posts`はcontextで設定した`posts`で、GraphQLから取得したdata
+- `Array.from({ length: pageContext.numberOfPages})`でページャの番号を生成
+
+```javascript:src/templates/blogPostList.js
+const blogPostList = ({ pageContext }) => (
+  <Layout>
+    {
+      pageContext.posts.map(post => (
+        <div key={post.node.wordpress_id}>
+          <h3 dangerouslySetInnerHTML={{ __html: post.node.title }} />
+          <p dangerouslySetInnerHTML={{ __html: post.node.content }} />
+        </div>
+      ))
+    }
+    {
+      Array.from({ length: pageContext.numberOfPages}).map((page, index) => (
+        <div key={index}>
+          <Link to={index === 0 ? '/blog' : `/blog/${index + 1}`}>
+            {index + 1}
+          </Link>
+        </div>
+      ))
+    }
+  </Layout>
+);
+
+export default blogPostList;
+```
+
 ## WordPressのdataをGraphQLで取得
 
 ### GraphQLで取得したdataを展開
@@ -602,6 +659,8 @@ export default Hoge;
 ## その他
 
 ### WordPressにカスタム投稿タイプ「portfolio」を追加
+
+- WordPressのthemeで管理しているfunctions.phpに記述
 
 ```php:functions.php
 <?php
