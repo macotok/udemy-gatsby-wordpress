@@ -484,6 +484,24 @@ const Hoge = () => (
 export default Hoge;
 ```
 
+### 投稿ページ
+
+```
+{
+  allWordpressPost{
+    edges{
+      node{
+        wordpress_id
+        title
+        content
+        excerpt
+        date
+      }
+    }
+  }
+}
+```
+
 ### 固定ページ
 
 ```

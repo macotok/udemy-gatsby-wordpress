@@ -67,7 +67,7 @@ exports.createPages = ({ graphql, actions }) => {
       })
       // ==== END PAGES ====
 
-      // ==== PORTFOLIO (WORDPRESS NATIVE AND ACF) ====
+      // ==== PORTFOLIO ====
       .then(() => {
         graphql(
           `
@@ -111,5 +111,43 @@ exports.createPages = ({ graphql, actions }) => {
         })
       })
     // ==== END PORTFOLIO ====
+    // ==== BLOG POST ====
+      .then(() => {
+        graphql(`
+          {
+            allWordpressPost{
+              edges{
+                node{
+                  wordpress_id
+                  title
+                  content
+                  excerpt
+                  date
+                }
+              }
+            }
+          }
+        `).then(result => {
+          if (result.errors) {
+            console.log(result.errors);
+            reject(result.errors);
+          }
+          const posts = result.data.allWordpressPost.edges;
+          const postsPerPage = 2;
+          const numberOfPages = Math.ceil(posts.length / postsPerPage);
+
+          Array.from({ length: numberOfPages }).forEach((page, index) => {
+            createPage({
+              path: index === 0 ? '/blog' : `/blog/${index + 1}`,
+              context: {
+                posts: posts.slice(index * postsPerPage, (index * postsPerPage) + postsPerPage),
+                numberOfPages,
+                currentPage: index + 1
+              },
+            });
+          });
+          resolve();
+        })
+      })
   })
 }
