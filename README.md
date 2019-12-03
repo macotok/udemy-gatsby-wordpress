@@ -259,6 +259,14 @@ import { graphql, StaticQuery, Link } from 'gatsby';
 $ yarn add gatsby-plugin-styled-components styled-components babel-plugin-styled-components
 ```
 
+- `gatsby-config.js`のpluginに設定
+
+```javascript:gatsby-config.js
+plugins: [
+    `gatsby-plugin-styled-components`,
+],
+```
+
 - globalに設定
 
 ```javascript
