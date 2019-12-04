@@ -520,6 +520,24 @@ const PageNumberWrapper = styled.div`
 <PageNumberWrapper key={index} isCurrentPage={index + 1 === pageContext.currentPage}>
 ```
 
+### GraphQLで日付フォーマットを指定
+
+- `formatString`で指定
+
+```
+{
+  allWordpressPost{
+    edges{
+      node{
+        excerpt
+        date(formatString: "YYYY/MM/DD hh:mm")
+      }
+    }
+  }
+}
+```
+
+
 ## WordPressのdataをGraphQLで取得
 
 ### GraphQLで取得したdataを展開
@@ -569,7 +587,7 @@ export default Hoge;
         title
         content
         excerpt
-        date
+        date(formatString: "YYYY/MM/DD hh:mm")
       }
     }
   }
