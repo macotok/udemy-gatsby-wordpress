@@ -503,6 +503,23 @@ const blogPostList = ({ pageContext }) => (
 export default blogPostList;
 ```
 
+### 一覧画面のページネーションでCurrentPageかを判定
+
+- style-componentsでpropsを受け取って判定
+- `pageContext.currentPage`は`gatsby-node.js`のcontextで設定した値
+
+
+```javascript
+import styled from 'styled-components';
+
+const PageNumberWrapper = styled.div`
+  border: 1px solid #eee;
+  background-color: ${props => props.isCurrentPage ? '#eee' : 'white'};
+`;
+
+<PageNumberWrapper key={index} isCurrentPage={index + 1 === pageContext.currentPage}>
+```
+
 ## WordPressのdataをGraphQLで取得
 
 ### GraphQLで取得したdataを展開
