@@ -5,15 +5,16 @@ import HeaderNav from '../Molecules/List/HeaderNav';
 
 const HeaderWrapper = styled.header`
   display: flex;
+  align-items: center;
   background-color: #3B3B58;
-  padding: 10px 0;
+  padding: 1rem 0;
 `;
 
 const HeaderInner = styled.div`
-  max-width: 960px;
+  max-width: 1000px;
   margin: 0 auto;
   display: flex;
-  width: 960px;
+  width: 1000px;
   height: 100%;
 `;
 

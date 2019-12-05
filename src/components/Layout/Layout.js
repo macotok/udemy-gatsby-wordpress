@@ -4,7 +4,7 @@ import Header from '../Organisms/Header';
 import LayoutStyled from './LayoutStyled';
 
 const LayoutWrapper = styled.div`
-  max-width: 960px;
+  max-width: 1000px;
   margin: 0 auto;
 `;
 
