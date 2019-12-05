@@ -1,20 +1,12 @@
 import React from 'react';
 import { graphql, StaticQuery, Link } from 'gatsby';
 import styled from 'styled-components';
-import SiteInfo from './SiteInfo';
 
-const MainMenuWrapper = styled.div`
-  display: flex;
-  background-color: rgb(3, 27, 77);
-  padding: 10px 0;
+const Nav = styled.nav`
 `;
 
-const MainMenuInner = styled.div`
-  max-width: 960px;
-  margin: 0 auto;
+const NavLitem = styled.ul`
   display: flex;
-  width: 960px;
-  height: 100%;
 `;
 
 const ManuItem = styled(Link)`
@@ -27,7 +19,7 @@ const ManuItem = styled(Link)`
   }
 `;
 
-const MainMenu = () => (
+const HeaderNav = () => (
   <StaticQuery query={graphql`
     {
       allWordpressWpApiMenusMenusItems(filter: {
@@ -46,18 +38,19 @@ const MainMenu = () => (
       }
     }
   `} render={props => (
-    <MainMenuWrapper>
-      <MainMenuInner>
-        <SiteInfo />
-        {props.allWordpressWpApiMenusMenusItems.edges[0].node.items.map(item => (
-          <ManuItem to={`/${item.object_slug}`} key={item.title}>
-            {item.title}
-          </ManuItem>
-        ))};
-      </MainMenuInner>
-    </MainMenuWrapper>
+      <Nav>
+        <NavLitem>
+          {props.allWordpressWpApiMenusMenusItems.edges[0].node.items.map(item => (
+            <li>
+              <ManuItem to={`/${item.object_slug}`} key={item.title}>
+                {item.title}
+              </ManuItem>
+            </li>
+          ))};
+        </NavLitem>
+      </Nav>
   )} />
 );
 
-export default MainMenu;
+export default HeaderNav;
 
