@@ -1,6 +1,6 @@
 import React from 'react';
-import Layout from '../components/Layout/Layout';
-import PortfolioItems from '../components/Organisms/PortfolioItems';
+import Layout from '../components/layout';
+import PortfolioItems from '../components/PortfolioItems';
 
 export default ({ pageContext }) => (
   <Layout>

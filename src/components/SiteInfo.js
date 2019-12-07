@@ -8,16 +8,9 @@ const SiteInfoWrapper = styled.div`
   margin: auto 0;
 `;
 
-const SiteTitle = styled.h1`
+const SiteTitle = styled.div`
   font-weight: bold;
-  font-size: 1.2rem;
-  line-height: 1.4;
-  margin-bottom: .2rem;
 `;
-
-const SiteDescription = styled.p`
-  font-size: .8rem;
-`
 
 const SiteInfo = () => (
   <StaticQuery query={graphql`
@@ -36,9 +29,9 @@ const SiteInfo = () => (
       <SiteTitle>
         {props.allWordpressSiteMetadata.edges[0].node.name}
       </SiteTitle>
-      <SiteDescription>
+      <div>
         {props.allWordpressSiteMetadata.edges[0].node.description}
-      </SiteDescription>
+      </div>
     </SiteInfoWrapper>
   )} />
 );

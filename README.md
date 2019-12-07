@@ -300,7 +300,7 @@ const ManuItem = styled(Link)`
   padding: 8px 16px;
 `;
 
-const Header = () => (
+const MainMenu = () => (
   <StaticQuery query={graphql`
     {
       allWordpressWpApiMenusMenusItems(filter: {
@@ -705,15 +705,15 @@ add_theme_support('post-thumbnails');
 
 function create_custom_portfolio_post_type() {
 	register_post_type('portfolio', 
-    array(
-      'labels' => array(
-        'name' => __('portfolio'),
-  		  'singular_name' => __('portfolio')
-  	  ),
-  	  'public' => true,
-  	  'show_in_admin_bar' => true,
-  	  'show_in_rest' => true,
-    ));
+					  array(
+						  'labels' => array(
+						  		'name' => __('portfolio'),
+							  'singular_name' => __('portfolio')
+						  ),
+						  'public' => true,
+						  'show_in_admin_bar' => true,
+						  'show_in_rest' => true,
+					  ));
 	add_post_type_support('portfolio', array('thumbnail', 'excerpt'));
 }
 
