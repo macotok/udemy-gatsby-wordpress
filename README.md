@@ -690,6 +690,50 @@ export default Hoge;
 }
 ```
 
+## サイトを公開する手順
+
+### localのWorPressのdataをhostingされたdataに移行
+
+WordPressのプラグイン「All-in-One WP Migration」を使用。
+
+- localではexport機能でファイルをダウンロード
+- hostingされたWordPressでそのファイルをimport
+
+※ファイルサイズを拡大させるには`.httaccess`、`wp-config.php`を編集。
+
+### netlifyで作業repositoryと紐付け
+
+#### デプロイ準備
+
+- netlifyのアカウント登録
+- 作業repositoryのmasterを選択
+- deployコマンドを設定(例: `gatsby build`)
+- hosting対象ディレクトリを指定(例: `public/`)
+
+#### 環境変数を設定
+
+- netlifyの`Environment variables`で`API_PROTOCOL`と`API_URL`を指定(hostingされているWordPressのもの)
+- .envファイルに`API_PROTOCOL`と`API_URL`を指定(local環境のもの)
+- `gatsby-config.js`で設定
+
+```javascript:gatsby-config.js
+require("dotenv").config({
+  path: '.env',
+});
+{
+  resolve: "gatsby-source-wordpress",
+  options: {
+    baseUrl: process.env.API_URL,
+    protocol: process.env.API_PROTOCOL,
+  }
+}
+```
+
+#### publicのルートに_headersファイルと_redirectsファイルを自動的に生成。
+
+- `gatsby-plugin-netlify`packageをinstall
+- `gatby-config.js`のpluginに追加
+
 
 ## その他
 
@@ -704,7 +748,7 @@ add_theme_support( 'menus' );
 add_theme_support('post-thumbnails');
 
 function create_custom_portfolio_post_type() {
-	register_post_type('portfolio', 
+	register_post_type('portfolio',
     array(
       'labels' => array(
         'name' => __('portfolio'),
