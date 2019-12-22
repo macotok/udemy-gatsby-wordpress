@@ -1,4 +1,4 @@
-netr# udemy-gatsby-wordpress
+# udemy-gatsby-wordpress
 
 - [Gatsby JS: Build static sites with React Wordpress & GraphQL](https://www.udemy.com/course/gatsby-js-react-wordpress-graphql/)を参考
 - WordPressのCMSで投稿したdataをGraghQLで取得してGatsby(React)でサイト表示
@@ -703,14 +703,14 @@ WordPressのプラグイン「All-in-One WP Migration」を使用。
 
 ### デプロイ準備
 
-- netrifyのアカウント登録
+- netlifyのアカウント登録
 - 作業repositoryのmasterを選択
 - deployコマンドを設定(例: `gatsby build`)
 - hosting対象ディレクトリを指定(例: `public/`)
 
 ### 環境変数を設定
 
-- netrifyの`Environment variables`で`API_PROTOCOL`と`API_URL`を指定(hostingされているWordPressのもの)
+- netlifyの`Environment variables`で`API_PROTOCOL`と`API_URL`を指定(hostingされているWordPressのもの)
 - .envファイルに`API_PROTOCOL`と`API_URL`を指定(local環境のもの)
 - `gatsby-config.js`で設定
 
@@ -729,16 +729,16 @@ require("dotenv").config({
 
 ### publicのルートに_headersファイルと_redirectsファイルを自動的に生成
 
-- `gatsby-plugin-netrify`packageをinstall
+- `gatsby-plugin-netlify`packageをinstall
 - `gatby-config.js`のpluginに追加
 
 ### localのWordPressでの保存をトリガーにbuild
 
 ``` php:functions.php
-add_action('save_post', 'netrify_build');
+add_action('save_post', 'netlify_build');
 
-function netrify_build() {
-	wp_remote_post({netrifyのsetting/Build hooksに設定したURL});
+function netlify_build() {
+	wp_remote_post({netlifyのsetting/Build hooksに設定したURL});
 }
 ```
 
