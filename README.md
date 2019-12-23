@@ -692,21 +692,22 @@ export default Hoge;
 
 ## サイトを公開する手順
 
-### localのWordPressのdataをhostingされたWordPressのdataに移行
+### localのWordPressのdataをhostingされたWordPressに移行
 
-WordPressのプラグイン「All-in-One WP Migration」を使用。
+WordPressのプラグイン「All-in-One WP Migration」を使用
 
 - localではexport機能でファイルをダウンロード
 - hostingされたWordPressでそのファイルをimport
 
-※ファイルサイズを拡大させるには`.httaccess`、`wp-config.php`を編集。
+※ファイルサイズを拡大させるには`.httaccess`、`wp-config.php`を編集
 
 ### デプロイ準備
 
-- netlifyのアカウント登録
-- 作業repositoryのmasterを選択
-- deployコマンドを設定(例: `gatsby build`)
-- hosting対象ディレクトリを指定(例: `public/`)
+- netlifyのアカウント作成
+- Production branchをmasterにする
+- GithubのRepositoryを指定(Gitlab、Bitbucketも可)
+- Build commandを設定(例: `gatsby build`)
+- Publish directoryを指定(例: `public/`)
 
 ### 環境変数を設定
 
@@ -732,7 +733,7 @@ require("dotenv").config({
 - npmのpackage`gatsby-plugin-netlify`をinstall
 - `gatby-config.js`のpluginに追加
 
-### WordPressでの保存をトリガーにbuild
+### WordPressの投稿保存をトリガーにbuild
 
 ``` php:functions.php
 add_action('save_post', 'netlify_build');
@@ -757,11 +758,10 @@ TypeError: Cannot read property 'data' of undefined
 
 これはWordPressを置いてるサーバーがレンタルサーバーの「エックスサーバー」だから起こるエラーで、海外IPからのwp-jsonへのアクセスを許可してないためでした。
 そのため国外IPアドレスからのアクセスを許可する必要があります。
-`サーバーについて ＞ WordPressセキュリティ設定 ＞ 国外IPアクセス制限設定
+`サーバーについて ＞ WordPressセキュリティ設定 ＞ 国外IPアクセス制限設定`
 
 参考サイト
 [ブログをWordpressからGatsbyに移行したので、その手順とハマったポイントを解説する](https://qiita.com/akashixi/items/9653d0a6522117618e0f)
-
 
 ## その他
 
