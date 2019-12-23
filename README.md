@@ -692,7 +692,7 @@ export default Hoge;
 
 ## サイトを公開する手順
 
-### localのWorPressのdataをhostingされたdataに移行
+### localのWordPressのdataをhostingされたWordPressのdataに移行
 
 WordPressのプラグイン「All-in-One WP Migration」を使用。
 
@@ -710,9 +710,9 @@ WordPressのプラグイン「All-in-One WP Migration」を使用。
 
 ### 環境変数を設定
 
-- netlifyの`Environment variables`で`API_PROTOCOL`と`API_URL`を指定(hostingされているWordPressのもの)
-- .envファイルに`API_PROTOCOL`と`API_URL`を指定(local環境のもの)
-- `gatsby-config.js`で設定
+- netlifyの`Environment variables`でhostingされているWordPressの`API_PROTOCOL`と`API_URL`を指定
+- .envファイルにlocal環境の`API_PROTOCOL`と`API_URL`を指定
+- `gatsby-config.js`で下記設定
 
 ```javascript:gatsby-config.js
 require("dotenv").config({
@@ -729,10 +729,10 @@ require("dotenv").config({
 
 ### publicのルートに_headersファイルと_redirectsファイルを自動的に生成
 
-- `gatsby-plugin-netlify`packageをinstall
+- npmのpackage`gatsby-plugin-netlify`をinstall
 - `gatby-config.js`のpluginに追加
 
-### localのWordPressでの保存をトリガーにbuild
+### WordPressでの保存をトリガーにbuild
 
 ``` php:functions.php
 add_action('save_post', 'netlify_build');
@@ -741,6 +741,27 @@ function netlify_build() {
 	wp_remote_post({netlifyのsetting/Build hooksに設定したURL});
 }
 ```
+
+### ハマったポイント
+
+以上の手順でbuildするとsuccessするが、deployすると下記のエラーが起こる
+
+```
+Path: /wp-json
+The server response was "403 Forbidden"
+error "gatsby-source-wordpress" threw an error while running the sourceNodes lifecycle:
+Cannot read property 'data' of undefined
+
+TypeError: Cannot read property 'data' of undefined
+```
+
+これはWordPressを置いてるサーバーがレンタルサーバーの「エックスサーバー」だから起こるエラーで、海外IPからのwp-jsonへのアクセスを許可してないためでした。
+そのため国外IPアドレスからのアクセスを許可する必要があります。
+`サーバーについて ＞ WordPressセキュリティ設定 ＞ 国外IPアクセス制限設定
+
+参考サイト
+[ブログをWordpressからGatsbyに移行したので、その手順とハマったポイントを解説する](https://qiita.com/akashixi/items/9653d0a6522117618e0f)
+
 
 ## その他
 
